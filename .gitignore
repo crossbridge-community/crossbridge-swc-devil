@@ -30,6 +30,7 @@
 # Build folders
 build/
 install/
+temp/
 
 # IntelliJ IDEA
 .idea/

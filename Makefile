@@ -55,9 +55,7 @@ else
 endif
 
 # C/CPP Compiler
-$?BASE_CFLAGS=-Werror -Wno-write-strings -Wno-trigraphs
-$?EXTRACFLAGS=
-$?OPT_CFLAGS=-O4
+$?CCOMPARGS=-Werror -Wno-write-strings -Wno-trigraphs -O4 -I./install/include 
 
 # ====================================================================================
 # HOST PLATFORM OPTIONS
@@ -72,25 +70,58 @@ $?BUILD_TRIPLE=x86_64-unknown-linux-gnu
 endif
 $?TRIPLE=avm2-unknown-freebsd8
 
-all: swig obj swc swf
+all: init lib swig abc obj swc swf
 
-swig: 
-	"$(FLASCC)/usr/bin/swig" -I./. -as3 -module ClientLib -outdir . -includeall -ignoremissing -o ClientLib_wrapper.c $(PWD)/as3api.h
-
-obj: 
+# Init build
+init: 
+	mkdir -p temp
 	mkdir -p build
 	mkdir -p install
+
+# Generate Library
+lib: 
 	cp -r DevIL/* build/
 	cd build && PATH="$(call unixpath,$(FLASCC)/usr/bin):$(PATH)" CC=$(CC) CXX=$(CXX) ./configure \
 	--prefix=$(PWD)/install --build=$(BUILD_TRIPLE) --host=$(TRIPLE) --target=$(TRIPLE) \
 	--enable-sse=no --enable-sse2=no --enable-sse3=no --enable-altivec=no --disable-asm --enable-static=yes --enable-shared=no --disable-dependency-tracking 
 	cd build && PATH="$(call unixpath,$(FLASCC)/usr/bin):$(PATH)" make install
 
-swc: 
-	ls
+# Generate SWIG wrapper (AS3<>C)
+swig: 
+	"$(FLASCC)/usr/bin/swig" -I./. -I./install/include -as3 -module ClientLib -outdir . -includeall -ignoremissing -o ClientLib_wrapper.c $(PWD)/as3api.h
 
-swf: 
-	#$(FLEX)/bin/mxmlc -library-path+=release/crossbridge-devil.swc src/main/actionscript/Main.as -debug=false -o build/Main.swf
+# Generate ABC ByteCode
+abc:
+	@echo "-------------------------------------------- ABC --------------------------------------------"
+	$(ASC2) -abcfuture -AS3 \
+				-import $(call nativepath,$(FLASCC)/usr/lib/builtin.abc) \
+				-import $(call nativepath,$(FLASCC)/usr/lib/playerglobal.abc) \
+				ClientLib.as
+	mv ClientLib.as temp/ClientLib.as
+	mv ClientLib.abc temp/ClientLib.abc
 
+# Generate linker OBJ   
+obj:
+	@echo "-------------------------------------------- OBJ --------------------------------------------"
+	"$(FLASCC)/usr/bin/gcc" $(CCOMPARGS) -c ClientLib_wrapper.c -o temp/ClientLib_wrapper.o
+	cp -f exports.txt temp/ 
+	"$(FLASCC)/usr/bin/nm" temp/ClientLib_wrapper.o | grep ' T ' | sed 's/.*__/_/' | sed 's/.* T //' >> temp/exports.txt
+ 
+# Generate library SWC 
+swc:
+	@echo "-------------------------------------------- SWC --------------------------------------------"
+	"$(FLASCC)/usr/bin/gcc" $(CCOMPARGS) temp/ClientLib.abc \
+        ClientLib_wrapper.c \
+        ClientLib.h \
+        ClientLib.c \
+        -flto-api=temp/exports.txt -swf-version=26 -emit-swc=crossbridge.DevIL -o release/crossbridge-devil.swc
+	mv ClientLib_wrapper.c temp/ClientLib_wrapper.c
+
+# Generate test SWF
+swf:
+	@echo "-------------------------------------------- SWF --------------------------------------------"
+	"$(FLEX)/bin/mxmlc" -advanced-telemetry -swf-version=26 -library-path+=release/crossbridge-devil.swc src/main/actionscript/Main.as -debug=false -optimize -remove-dead-code -o build/Main.swf
+
+# Generate build folders
 clean:
-	rm -rf build install
+	rm -rf build install temp
