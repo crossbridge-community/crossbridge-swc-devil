@@ -70,7 +70,7 @@ $?BUILD_TRIPLE=x86_64-unknown-linux-gnu
 endif
 $?TRIPLE=avm2-unknown-freebsd8
 
-all: init lib swig abc obj swc swf
+all: clean init lib swig abc obj swc swf
 
 # Init build
 init: 
@@ -81,7 +81,7 @@ init:
 # Generate Library
 lib: 
 	cp -r DevIL/* build/
-	cd build && PATH="$(call unixpath,$(FLASCC)/usr/bin):$(PATH)" CC=$(CC) CXX=$(CXX) ./configure \
+	cd build && PATH="$(call unixpath,$(FLASCC)/usr/bin):$(PATH)" ./configure \
 	--prefix=$(PWD)/install --build=$(BUILD_TRIPLE) --host=$(TRIPLE) --target=$(TRIPLE) \
 	--enable-sse=no --enable-sse2=no --enable-sse3=no --enable-altivec=no --disable-asm --enable-static=yes --enable-shared=no --disable-dependency-tracking 
 	cd build && PATH="$(call unixpath,$(FLASCC)/usr/bin):$(PATH)" make install
