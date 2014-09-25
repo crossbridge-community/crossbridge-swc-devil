@@ -27,10 +27,16 @@
 # =END MIT LICENSE
 #
 
+# Build folders
 build/
+install/
 
 # IntelliJ IDEA
 .idea/
 *.iml
 *.ipr
 *.iws
+
+# SWIG generated
+ClientLib.as
+*_wrapper.*

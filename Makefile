@@ -72,7 +72,10 @@ $?BUILD_TRIPLE=x86_64-unknown-linux-gnu
 endif
 $?TRIPLE=avm2-unknown-freebsd8
 
-all: obj swc swf
+all: swig obj swc swf
+
+swig: 
+	"$(FLASCC)/usr/bin/swig" -I./. -as3 -module ClientLib -outdir . -includeall -ignoremissing -o ClientLib_wrapper.c $(PWD)/as3api.h
 
 obj: 
 	mkdir -p build
