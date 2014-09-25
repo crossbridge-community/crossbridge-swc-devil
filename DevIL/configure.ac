@@ -74,8 +74,8 @@ AS_IF([test "x$enable_release" = "xyes"],
        AS_IF([test "x$CXXFLAGS" = "x"],
 	     [CXXFLAGS="-O3"]) ],
       [test "x$enable_debug" = "xyes"],
-      [CFLAGS="-DNOINLINE -Wextra -g -O0"
-       CXXFLAGS="-DNOINLINE -Wextra -g -O0"
+      [CFLAGS="-DNOINLINE -Wall -g -O0"
+       CXXFLAGS="-DNOINLINE -Wall -g -O0"
        AC_DEFINE([DEBUG],
 		 [],
 		 ["Enable debug code features"]) ])
@@ -205,6 +205,19 @@ AS_IF([test "x$enable_asm" = "xyes"],
 	      [AC_DEFINE([IL_INLINE_ASM],
 			 [1],
 			 [Define if you can support at least some ASM]) ]) ])
+
+dnl
+dnl Test warning build options
+dnl
+AC_ARG_ENABLE([warning],
+              [AC_HELP_STRING([--enable-warning],
+			      [Compile breaks on warnings])],
+	      [build_warning="$enable_warning"],
+	      [build_warning="no"])
+
+AS_IF([test "$build_warning" = "yes"],
+      [ADD_CFLAGS([-Wall -Werror])],
+      [])
 
 dnl
 dnl Memory alignment functions
@@ -351,9 +364,6 @@ dnl The AM_COND_IF seems to be too new at the moment, let's wait a little bit ti
 dnl
 
 dnl AM_COND_IF([BUILD_ILU],
-AS_IF([test "x$enable_ILU" != "xyes"],
-	   [EXAMPLES_TO_BUILD="$EXAMPLES_TO_BUILD IL_override IL_read IL_simple"])
-
 AS_IF([test "x$enable_ILU" = "xyes"],
 	   [EXAMPLES_TO_BUILD="$EXAMPLES_TO_BUILD ILU_override ILU_read ILU_simple"])
 
@@ -415,9 +425,7 @@ AS_CASE([$host],
 	[AC_DEFINE([MAX_OS_X],
 		   [],
 		   [Building on Mac OS X]) 
-	 PLATFORM="OSX"],
-	 [*linux*],
-	 [PLATFORM="LINUX"])
+	 PLATFORM="OSX"])
 AC_SUBST([PLATFORM])
 
 AM_CONDITIONAL([WINDOWS_BUILD],
@@ -445,7 +453,7 @@ AC_CONFIG_FILES([Makefile
 		 docs/Makefile 
 		 data/Makefile 
 		 data/IL.pc data/ILU.pc data/ILUT.pc
-		 test/format_test/format_checks.sh test/format_test/ilu_checks.sh])
+		 test/format_test/format_checks.sh])
 dnl		 projects/Makefile]) 
 # src-IL/Makefile  src-IL/src/Makefile  src-IL/include/Makefile  src-ILU/Makefile  src-ILU/src/Makefile  src-ILU/include/Makefile  src-ILUT/Makefile  src-ILUT/src/Makefile  src-ILUT/include/Makefile  include/Makefile  include/IL/Makefile
 AC_OUTPUT

@@ -1,28 +1,3 @@
-2009-06-16 Matěj Týč <bubla@users.sf.net>
-	* m4/devil-definitions.m4: Fixed handling of nvtt and libsquish as C++
-	libraries instead of C (caused header found but could not be compiled
-	error)
-
-2009-03-? Matěj Týč <bubla@users.sf.net> NOTE: COMMIT PROBABLY NEVER HAPPENED
-IN THIS BRANCH
-	* configure.ac: Corrected example compilation report
-	* m4/devil-definitions.m4: Added correct LCMS absence handling
-
-2009-03-16 Denton Woods <doomwiz@users.sf.net>
-	* ilu_error-italian.h: Added Italian translation of error messages.
-	* ilu_error.c: Added Italian support.
-	* ilu.h: Added ILU_ITALIAN.
-
-2009-03-14 Denton Woods <doomwiz@users.sf.net>
-	* il_alloc.c:130: Fixed bug #2671858 (used Ptr instead of ptr).
-	
-2009-03-11 Matěj Týč <bubla@users.sf.net>
-	* configure.ac: Removed "Break on warnings" option.
-	* tests/format_test/ilu_checks.sh: Added ILU test
-
-2009-03-10 Denton Woods <doomwiz@users.sf.net>
-	* lib/Makefile.am: Added ilut_config.h.
-
 2009-03-08 Matěj Týč <bubla@users.sf.net>
 	* docs/Makefile.am: Fixed distcheck by overriding dvi target.
 	* lib/Makefile.am: Renoved ilu_mipmap.h file

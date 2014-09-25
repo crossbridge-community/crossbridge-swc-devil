@@ -16,6 +16,7 @@
 #include "il_targa.h"
 //#include <time.h>  // for ilMakeString()
 #include <string.h>
+#include "il_manip.h"
 #include "il_bits.h"
 
 #ifdef DJGPP

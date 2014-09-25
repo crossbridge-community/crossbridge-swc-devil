@@ -13,6 +13,7 @@
 
 #include "il_internal.h"
 #ifndef IL_NO_WAL
+#include "il_manip.h"
 #include "il_q2pal.h"
 
 

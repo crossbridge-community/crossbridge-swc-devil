@@ -15,6 +15,7 @@
 #include "il_internal.h"
 #ifndef IL_NO_PIC
 #include "il_pic.h"
+#include "il_manip.h"
 #include <string.h>
 
 

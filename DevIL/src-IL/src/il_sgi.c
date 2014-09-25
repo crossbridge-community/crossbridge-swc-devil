@@ -13,6 +13,7 @@
 #include "il_internal.h"
 #ifndef IL_NO_SGI
 #include "il_sgi.h"
+#include "il_manip.h"
 #include <limits.h>
 
 static char *FName = NULL;

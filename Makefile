@@ -77,9 +77,11 @@ all: obj swc swf
 obj: 
 	mkdir -p build
 	mkdir -p install
+	#cd build && PATH="$(call unixpath,$(FLASCC)/usr/bin):/usr/bin/:/usr/local/bin/" $(FLASCC)/usr/bin/cmake -G "Unix Makefiles" "$(PWD)/DevIL" -DCMAKE_INSTALL_PREFIX="$(PWD)/install"
+	#cd build && PATH="$(call unixpath,$(FLASCC)/usr/bin):/usr/bin/:/usr/local/bin/" make
 	cp -r DevIL/* build/
-	cd build && autoreconf -i
-	cd build && PATH="$(call unixpath,$(FLASCC)/usr/bin):/usr/bin/:/usr/local/bin/" CC=$(CC) CXX=$(CXX) configure --disable-shared --enable-static --prefix=install --build=$(BUILD_TRIPLE) --host=$(TRIPLE) --target=$(TRIPLE)
+	#cd build && PATH="$(call unixpath,$(FLASCC)/usr/bin):/usr/bin/:/usr/local/bin/" autoreconf -i
+	cd build && PATH="$(call unixpath,$(FLASCC)/usr/bin):/usr/bin/:/usr/local/bin/" CC=$(CC) CXX=$(CXX) ./configure --prefix=$(PWD)/install --build=$(BUILD_TRIPLE) --host=$(TRIPLE) --target=$(TRIPLE)
 	cd build && PATH="$(call unixpath,$(FLASCC)/usr/bin):/usr/bin/:/usr/local/bin/" make install
 
 swc: 

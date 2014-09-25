@@ -1,7 +1,7 @@
 crossbridge-swc-devil [![Build Status](https://travis-ci.org/crossbridge-community/crossbridge-swc-devil.svg?branch=master)](https://travis-ci.org/crossbridge-community/crossbridge-swc-devil)
 =====================
 
-CrossBridge Flash SWC port - Developer's Image Library (DevIL) is a cross-platform image library utilizing a simple syntax to load, save, convert, manipulate, filter, and display a variety of images with ease. It is highly portable and has been ported to several platforms. 
+CrossBridge Flash SWC port (1.7.8) - Developer's Image Library (DevIL) is a cross-platform image library utilizing a simple syntax to load, save, convert, manipulate, filter, and display a variety of images with ease. It is highly portable and has been ported to several platforms. 
 
 ## Building the library
 

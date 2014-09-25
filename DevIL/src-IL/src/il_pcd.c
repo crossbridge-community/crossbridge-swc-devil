@@ -15,6 +15,7 @@
 
 #include "il_internal.h"
 #ifndef IL_NO_PCD
+#include "il_manip.h"
 
 
 ILboolean iLoadPcdInternal(void);

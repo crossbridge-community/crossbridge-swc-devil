@@ -114,7 +114,7 @@ AC_DEFUN([TEST_FORMAT],
                [AC_MSG_RESULT([no])
                 AC_DEFINE([IL_NO_$2],
                           [],
-                          [$1 support ($3) ]) ],
+                          [$1 support ($3)])],
                [AC_MSG_RESULT([yes]) 
                 SUPPORTED_FORMATS="$SUPPORTED_FORMATS $2"]) 
          lib_test_result="" ])
@@ -137,9 +137,8 @@ dnl
 dnl Check for libraries
 dnl
 dnl Usage:
-dnl DEVIL_IL_LIB(<include>, <library>[, <define>])
+dnl DEVIL_IL_LIB(<include>, <library>)
 dnl 	the <library> is appended to IL_LIBS, sets have_<library> to yes/no
-dnl dnl If we don't detect the LIB, optionally #define IL_NO_<define>
 dnl Nothing else is done, see MAYBE_OPTIONAL_DEPENDENCY macro...
 dnl
 AC_DEFUN([DEVIL_IL_LIB],
@@ -150,18 +149,13 @@ AC_DEFUN([DEVIL_IL_LIB],
                                          have_$2="yes"],
                                         [have_$2="no"])],
                           [have_$2="no"]) ])
-dnl	 AS_IF([test $# = 3 -a "x$have_$2" = "xno"],
-dnl	       [AC_DEFINE([IL_NO_$3],
-dnl                         [],
-dnl                          [$2 support ]) ]) ])
 
 dnl
 dnl Checks for squish library = GPU accelerated DXT compression
 dnl Can be used along with nvidia texture tools
 dnl
 AC_DEFUN([DEVIL_CHECK_LIBSQUISH],
-         [AC_LANG_PUSH([C++])
-	  DEVIL_IL_LIB([squish.h],
+         [DEVIL_IL_LIB([squish.h],
                        [squish])
           lib_test_result="$have_squish"
           AS_IF([test "x$lib_test_result" = "xyes"],
@@ -169,16 +163,14 @@ AC_DEFUN([DEVIL_CHECK_LIBSQUISH],
                            [1],
                            [Define if you have libsquish installed]) 
                  MAYBE_OPTIONAL_DEPENDENCY([IL], 
-                                           [libsquish]) ])
-          AC_LANG_POP([C++]) ])
+                                           [libsquish]) ]) ])
 
 dnl
 dnl Checks for nvidia texture tools library - GPU acceleration of DXT compression
 dnl Can be used along with libsquish
 dnl 
 AC_DEFUN([DEVIL_CHECK_NVIDIA_TEXTOOLS],
-         [AC_LANG_PUSH([C++])
-          DEVIL_IL_LIB([nvtt/nvtt.h],
+         [DEVIL_IL_LIB([nvtt/nvtt.h],
                        [nvtt])
           lib_test_result="$have_nvtt"
           AS_IF([test "x$lib_test_result" = "xyes"],
@@ -186,8 +178,7 @@ AC_DEFUN([DEVIL_CHECK_NVIDIA_TEXTOOLS],
                            [1],
                            [Define if you have nvidia texture tools library installed]) 
                  MAYBE_OPTIONAL_DEPENDENCY([IL], 
-                                           [libnvtt-nvidia_texture_tools]) ])
-          AC_LANG_POP([C++]) ])
+                                           [libnvtt-nvidia_texture_tools]) ]) ])
 
 AC_DEFUN([SETTLE_LCMS],
 [AC_CHECK_LIB([lcms],
@@ -207,10 +198,7 @@ AS_IF([test "x$have_lcms_lib" = "xyes" -a "x$have_lcms_h" = "xyes"],
       [have_lcms="yes"
        IL_LIBS_REQUIRED="$IL_LIBS_REQUIRED lcms"
        lib_test_result="yes"],
-      [lib_test_result="no"
-       AC_DEFINE([IL_NO_LCMS],
-		 [1],
-		 [We don't have LCMS]) ]) ])
+      [lib_test_result="no"]) ])
 
 AC_DEFUN([SETTLE_OPENEXR],
          [PKG_CHECK_MODULES([OPENEXR], 
