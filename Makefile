@@ -59,10 +59,14 @@ $?BASE_CFLAGS=-Werror -Wno-write-strings -Wno-trigraphs
 $?EXTRACFLAGS=
 $?OPT_CFLAGS=-O4
 
-all: swc swf
+all: obj swc swf
+
+obj: 
+	mkdir -p build
+	cd build && PATH="$(call unixpath,$(FLASCC)/usr/bin):$(PATH)" CC=gcc CXX=g++ CFLAGS="$(OPT_CFLAGS) $(BASE_CFLAGS) $(EXTRACFLAGS)" CXXFLAGS="$(OPT_CFLAGS) $(BASE_CFLAGS) $(EXTRACFLAGS)" cmake ../DevIL/
 
 swc: 
-	cd DevIL && ls
+	ls
 
 swf: 
 	$(FLEX)/bin/mxmlc -library-path+=release/crossbridge-devil.swc src/main/actionscript/Main.as -debug=false -o build/Main.swf
