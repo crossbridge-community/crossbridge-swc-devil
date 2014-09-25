@@ -77,12 +77,11 @@ all: obj swc swf
 obj: 
 	mkdir -p build
 	mkdir -p install
-	#cd build && PATH="$(call unixpath,$(FLASCC)/usr/bin):/usr/bin/:/usr/local/bin/" $(FLASCC)/usr/bin/cmake -G "Unix Makefiles" "$(PWD)/DevIL" -DCMAKE_INSTALL_PREFIX="$(PWD)/install"
-	#cd build && PATH="$(call unixpath,$(FLASCC)/usr/bin):/usr/bin/:/usr/local/bin/" make
 	cp -r DevIL/* build/
-	#cd build && PATH="$(call unixpath,$(FLASCC)/usr/bin):/usr/bin/:/usr/local/bin/" autoreconf -i
-	cd build && PATH="$(call unixpath,$(FLASCC)/usr/bin):/usr/bin/:/usr/local/bin/" CC=$(CC) CXX=$(CXX) ./configure --prefix=$(PWD)/install --build=$(BUILD_TRIPLE) --host=$(TRIPLE) --target=$(TRIPLE)
-	cd build && PATH="$(call unixpath,$(FLASCC)/usr/bin):/usr/bin/:/usr/local/bin/" make install
+	cd build && PATH="$(call unixpath,$(FLASCC)/usr/bin):$(PATH)" CC=$(CC) CXX=$(CXX) ./configure \
+	--prefix=$(PWD)/install --build=$(BUILD_TRIPLE) --host=$(TRIPLE) --target=$(TRIPLE) \
+	--enable-sse=no --enable-sse2=no --enable-sse3=no --enable-altivec=no --disable-asm --enable-static=yes --enable-shared=no --disable-dependency-tracking 
+	cd build && PATH="$(call unixpath,$(FLASCC)/usr/bin):$(PATH)" make install
 
 swc: 
 	ls
